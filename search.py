@@ -3,7 +3,7 @@ import pickle
 import sys
 
 def main():
-    with open('iindex.pickle', 'rb') as f:
+    with open('iindex', 'rb') as f:
         index = pickle.load(f)
 
     query = sys.argv[1]
