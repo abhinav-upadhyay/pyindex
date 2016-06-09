@@ -871,5 +871,8 @@ stems = {
         'detects': 'detect',
         'detected': 'detect',
         'detecting': 'detect',
-        'printers': 'printer'
+        'printers': 'printer',
+        'deploys': 'deploy',
+        'deployed': 'deploy',
+        'deploying': 'deploy'
 }
