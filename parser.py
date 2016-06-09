@@ -45,18 +45,37 @@ def remove_special_chars(word):
 
     w = word.replace('-', ' ')
     w = w.replace('!', '')
-    w = w.replace('.', '')
     w = w.replace('#', '')
     w = w.replace('(', '')
     w = w.replace(')', '')
     w = w.replace(',', ' ')
     w = w.replace(';', ' ')
     w = w.replace('"', '')
-    w = w.replace("'", "")
     w = w.replace('`', '')
+    w = w.replace('1', '')
+    w = w.replace('2', '')
+    w = w.replace('3', '')
+    w = w.replace('4', '')
+    w = w.replace('5', '')
+    w = w.replace('6', '')
+    w = w.replace('7', '')
+    w = w.replace('8', '')
+    w = w.replace('9', '')
+    w = w.replace('0', '')
+    w = w.replace('?', '')
+    if '.' in w:
+        if w[-1] == '.':
+            w = w.replace('.', '')
+        else:
+            w = w.replace('.', ' ')
+
+    if "'" in w:
+        if w[-2] == "'" and w[-1] == 's':
+            w = w[:-2]
+        w = w.replace("'", '')
     return w
 
-def parse_file(input_file, output=False):
+def parse_file(input_file, output=False, stem=True):
     try:
         with codecs.open(input_file, 'r', 'latin-1') as ip:
             file_name_parts = ip.name.split('/')[-1].split('.')
@@ -71,7 +90,7 @@ def parse_file(input_file, output=False):
                     for w in replacements.split():
                         if word in stopwords:
                             continue
-                        if w in stems.stems:
+                        if stem and w in stems.stems:
                             w = stems.stems.get(w)
                         if output:
                             sys.stdout.write('%s ' % w)
@@ -88,10 +107,10 @@ def parse_file(input_file, output=False):
         sys.stderr.write('Failed to open: %s due to %s\n' % (input_file, str(e)))
 
 
-def parse_dir_tree(rootdir, output=False):
+def parse_dir_tree(rootdir, output=False, stem=True):
     for root, dirs, files in os.walk(rootdir):
         for f in files:
-            parse_file(os.path.join(rootdir, f), output=output)
+            parse_file(os.path.join(rootdir, f), output=output, stem=stem)
         for d in dirs:
             parse_dir_tree(os.path.join(rootdir, d))
 
@@ -105,11 +124,12 @@ def main():
     argparser.add_argument('-s', '--source')
     argparser.add_argument('-o', '--output', type=bool, default=False)
     argparser.add_argument('-f', '--file')
+    argparser.add_argument('--no-stem', dest="no_stem", default=False)
     args = argparser.parse_args()
     if args.file:
-        parse_file(args.file, output=args.output)
+        parse_file(args.file, output=args.output, stem=not(args.no_stem))
     else:
-        parse_dir_tree(args.source, output=args.output)
+        parse_dir_tree(args.source, output=args.output, stem=not(args.no_stem))
     save_index()
 
 if __name__ == '__main__':
