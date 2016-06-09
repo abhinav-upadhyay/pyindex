@@ -430,4 +430,9 @@ stems = {
         'decides': 'decide',
         'degrees': 'degree',
         'agrees': 'agree',
+        'sentences': 'sentence',
+        'jails': 'jail',
+        'raises': 'raise',
+        'raised': 'raise',
+        'rises': 'rise'
 }
