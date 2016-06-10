@@ -11,6 +11,9 @@ import stems
 inverted_index = {}
 
 def remove_special_chars(word):
+    if word == 'c++':
+        return word
+
     if '%' in word:
         return None
     if '^' in word:
@@ -75,7 +78,7 @@ def remove_special_chars(word):
         w = w.replace("'", '')
     return w
 
-def parse_file(input_file, output=False, stem=True):
+def parse_file(input_file, output=False, stem=True, filter_stopwords=False):
     try:
         with codecs.open(input_file, 'r', 'latin-1') as ip:
             file_name_parts = ip.name.split('/')[-1].split('.')
@@ -88,7 +91,7 @@ def parse_file(input_file, output=False, stem=True):
                     if replacements is None:
                         continue
                     for w in replacements.split():
-                        if word in stopwords:
+                        if filter_stopwords and word in stopwords:
                             continue
                         if stem and w in stems.stems:
                             w = stems.stems.get(w)
@@ -107,10 +110,11 @@ def parse_file(input_file, output=False, stem=True):
         sys.stderr.write('Failed to open: %s due to %s\n' % (input_file, str(e)))
 
 
-def parse_dir_tree(rootdir, output=False, stem=True):
+def parse_dir_tree(rootdir, output=False, stem=True, filter_stopwords=False):
     for root, dirs, files in os.walk(rootdir):
         for f in files:
-            parse_file(os.path.join(rootdir, f), output=output, stem=stem)
+            parse_file(os.path.join(rootdir, f), output=output,
+                    stem=stem, filter_stopwords=filter_stopwords)
         for d in dirs:
             parse_dir_tree(os.path.join(rootdir, d))
 
@@ -125,11 +129,12 @@ def main():
     argparser.add_argument('-o', '--output', type=bool, default=False)
     argparser.add_argument('-f', '--file')
     argparser.add_argument('--no-stem', dest="no_stem", default=False)
+    argparser.add_argument('--filter-stopwords', dest='stop_words', default=False)
     args = argparser.parse_args()
     if args.file:
-        parse_file(args.file, output=args.output, stem=not(args.no_stem))
+        parse_file(args.file, output=args.output, filter_stopwords=args.stop_words, stem=not(args.no_stem))
     else:
-        parse_dir_tree(args.source, output=args.output, stem=not(args.no_stem))
+        parse_dir_tree(args.source, output=args.output, filter_stopwords=args.stop_words, stem=not(args.no_stem))
     save_index()
 
 if __name__ == '__main__':
