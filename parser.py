@@ -9,9 +9,10 @@ import stems
 #from stemming.porter2 import stem
 
 inverted_index = {}
+ignore_list = set(['c++', 'md5', 'sha1', 'sha2', 'sha256', 'sha512'])
 
 def remove_special_chars(word):
-    if word == 'c++':
+    if word in ignore_list:
         return word
 
     if '%' in word:
