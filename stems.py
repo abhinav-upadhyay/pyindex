@@ -396,7 +396,8 @@ stems = {
         'buffers': 'buffer',
         'buffered': 'buffer',
         'buffering': 'buffer',
-        'interruptes': 'interrupt',
+        'interrupts': 'interrupt',
+        'interrupted': 'interrupt',
         'delivers': 'deliver',
         'wakes': 'wake',
         'moves': 'move',
@@ -1291,6 +1292,20 @@ stems = {
         'skipped': 'skip',
         'skipping': 'skip',
         'tokens': 'token',
-        'drives': 'drive'
+        'drives': 'drive',
+        'spawns': 'spawn',
+        'spawned': 'spawn',
+        'spawning': 'spawn',
+        'continues': 'continue',
+        'continued': 'continue',
+        'continuing': 'continue',
+        'suspends': 'suspend',
+        'suspended': 'suspend',
+        'suspending': 'suspend',
+        'invocations': 'invocation',
+        'integers': 'integer',
+        'traverses': 'traverse',
+        'traversed': 'traverse',
+        'traversing': 'traverse'
 
 }
